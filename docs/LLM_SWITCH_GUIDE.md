@@ -1,374 +1,374 @@
-# LLM 模式切换详细指南
+# LLM Mode Switching Detailed Guide
 
-## 🎯 概述
+## 🎯 Overview
 
-BMAD Agent FastMCP Service 支持两种 LLM 模式，可以根据需要动态切换：
+BMAD Agent FastMCP Service supports two LLM modes that can be dynamically switched as needed:
 
-1. **内置 LLM 模式**：使用 Cursor IDE 的内置 LLM
-2. **外部 API 模式**：使用 DeepSeek API
+1. **Built-in LLM Mode**: Uses Cursor IDE's built-in LLM
+2. **External API Mode**: Uses DeepSeek API
 
-## 🔄 模式对比
+## 🔄 Mode Comparison
 
-| 特性 | 内置 LLM 模式 | 外部 API 模式 |
+| Feature | Built-in LLM Mode | External API Mode |
 |------|---------------|---------------|
-| **响应速度** | ⚡ 极快 | 🐌 较慢（网络延迟） |
-| **费用** | 🆓 免费 | 💰 按使用付费 |
-| **网络要求** | ❌ 无需网络 | ✅ 需要网络连接 |
-| **API Key** | ❌ 不需要 | ✅ 需要 DeepSeek API Key |
-| **推理能力** | 🔧 依赖 Cursor LLM | 🚀 DeepSeek 专业能力 |
-| **集成度** | 🎯 与 Cursor 深度集成 | 🔌 独立服务 |
+| **Response Speed** | ⚡ Extremely Fast | 🐌 Slower (network latency) |
+| **Cost** | 🆓 Free | 💰 Pay per use |
+| **Network Requirements** | ❌ No network needed | ✅ Requires network connection |
+| **API Key** | ❌ Not required | ✅ Requires DeepSeek API Key |
+| **Reasoning Ability** | 🔧 Depends on Cursor LLM | 🚀 DeepSeek professional capabilities |
+| **Integration** | 🎯 Deep integration with Cursor | 🔌 Independent service |
 
-## 🛠️ 切换方法
+## 🛠️ Switching Methods
 
-### 方法 1：使用 MCP 工具（推荐）
+### Method 1: Use MCP Tools (Recommended)
 
-在 Cursor 中直接与 AI 对话：
+Chat directly with AI in Cursor:
 
 ```
-用户: "切换到内置 LLM 模式"
-AI: 调用 switch_llm_mode('builtin')
-返回: 已切换到内置 LLM 模式
+User: "Switch to built-in LLM mode"
+AI: Calls switch_llm_mode('builtin')
+Returns: Switched to built-in LLM mode
 
-用户: "切换到外部 API 模式"
-AI: 调用 switch_llm_mode('external')
-返回: 已切换到外部 API 模式
+User: "Switch to external API mode"
+AI: Calls switch_llm_mode('external')
+Returns: Switched to external API mode
 
-用户: "查看当前 LLM 模式"
-AI: 调用 get_llm_mode_info()
-返回: 当前模式详细信息
+User: "View current LLM mode"
+AI: Calls get_llm_mode_info()
+Returns: Current mode detailed information
 ```
 
-### 方法 2：环境变量
+### Method 2: Environment Variables
 
 ```bash
-# 切换到内置 LLM 模式
+# Switch to built-in LLM mode
 set USE_BUILTIN_LLM=true
 
-# 切换到外部 API 模式
+# Switch to external API mode
 set USE_BUILTIN_LLM=false
 
-# 重启服务使配置生效
+# Restart service for configuration to take effect
 python bmad_agent_mcp.py
 ```
 
-### 方法 3：配置文件
+### Method 3: Configuration File
 
-编辑 `.env` 文件：
+Edit `.env` file:
 
 ```bash
-# 内置 LLM 模式
+# Built-in LLM mode
 USE_BUILTIN_LLM=true
 
-# 外部 API 模式
+# External API mode
 USE_BUILTIN_LLM=false
 DEEPSEEK_API_KEY=your_api_key_here
 ```
 
-### 方法 4：命令行脚本
+### Method 4: Command Line Script
 
 ```bash
-# 使用切换脚本
-python switch_llm_mode.py --builtin    # 切换到内置模式
-python switch_llm_mode.py --external   # 切换到外部模式
-python switch_llm_mode.py --info       # 查看当前模式
+# Use switching script
+python switch_llm_mode.py --builtin    # Switch to built-in mode
+python switch_llm_mode.py --external   # Switch to external mode
+python switch_llm_mode.py --info       # View current mode
 ```
 
-## 🔧 内置 LLM 模式详解
+## 🔧 Built-in LLM Mode Details
 
-### 工作原理
+### How It Works
 
-1. **智能体激活**：返回专业角色提示给 Cursor
-2. **角色扮演**：Cursor LLM 根据提示扮演专业角色
-3. **任务执行**：以专业身份完成用户任务
-4. **结果返回**：直接在 Cursor 中显示结果
+1. **Agent Activation**: Returns professional role prompts to Cursor
+2. **Role Playing**: Cursor LLM plays professional role based on prompts
+3. **Task Execution**: Completes user tasks in professional capacity
+4. **Result Return**: Displays results directly in Cursor
 
-### 优势
+### Advantages
 
-- ✅ **零延迟**：无网络请求，即时响应
-- ✅ **零费用**：不产生 API 调用费用
-- ✅ **深度集成**：与 Cursor 工作流完美融合
-- ✅ **离线工作**：无需网络连接
-- ✅ **隐私保护**：数据不离开本地环境
+- ✅ **Zero Latency**: No network requests, instant response
+- ✅ **Zero Cost**: No API call fees
+- ✅ **Deep Integration**: Perfect integration with Cursor workflow
+- ✅ **Offline Work**: No network connection required
+- ✅ **Privacy Protection**: Data doesn't leave local environment
 
-### 适用场景
+### Use Cases
 
-- 🎯 **日常开发**：代码编写、重构、调试
-- 🎯 **快速原型**：快速验证想法和概念
-- 🎯 **学习探索**：技术学习和实验
-- 🎯 **团队协作**：统一的开发环境
+- 🎯 **Daily Development**: Code writing, refactoring, debugging
+- 🎯 **Quick Prototyping**: Quickly validate ideas and concepts
+- 🎯 **Learning & Exploration**: Technical learning and experimentation
+- 🎯 **Team Collaboration**: Unified development environment
 
-## 🌐 外部 API 模式详解
+## 🌐 External API Mode Details
 
-### 工作原理
+### How It Works
 
-1. **请求转发**：将用户请求发送到 DeepSeek API
-2. **专业处理**：DeepSeek 模型进行专业分析
-3. **结果获取**：获取 API 返回的专业结果
-4. **格式化输出**：将结果格式化后返回给用户
+1. **Request Forwarding**: Sends user requests to DeepSeek API
+2. **Professional Processing**: DeepSeek model performs professional analysis
+3. **Result Retrieval**: Gets professional results returned by API
+4. **Formatted Output**: Formats results and returns to user
 
-### 优势
+### Advantages
 
-- 🚀 **专业能力**：DeepSeek 的强大推理能力
-- 🚀 **独立服务**：不依赖 IDE 的 LLM 能力
-- 🚀 **一致性**：跨平台一致的响应质量
-- 🚀 **可扩展**：支持更复杂的任务
+- 🚀 **Professional Capabilities**: DeepSeek's powerful reasoning abilities
+- 🚀 **Independent Service**: Doesn't depend on IDE's LLM capabilities
+- 🚀 **Consistency**: Cross-platform consistent response quality
+- 🚀 **Scalable**: Supports more complex tasks
 
-### 适用场景
+### Use Cases
 
-- 🎯 **复杂分析**：深度业务分析和架构设计
-- 🎯 **专业咨询**：需要专业领域知识的任务
-- 🎯 **批量处理**：大量数据的分析和处理
-- 🎯 **高质量输出**：对输出质量有严格要求
+- 🎯 **Complex Analysis**: Deep business analysis and architecture design
+- 🎯 **Professional Consulting**: Tasks requiring professional domain knowledge
+- 🎯 **Batch Processing**: Analysis and processing of large amounts of data
+- 🎯 **High-Quality Output**: Strict requirements for output quality
 
-## ⚙️ 配置详解
+## ⚙️ Configuration Details
 
-### 环境变量配置
+### Environment Variable Configuration
 
 ```bash
-# === LLM 模式配置 ===
-USE_BUILTIN_LLM=true                    # true=内置模式, false=外部模式
+# === LLM Mode Configuration ===
+USE_BUILTIN_LLM=true                    # true=built-in mode, false=external mode
 
-# === DeepSeek API 配置 ===
-DEEPSEEK_API_KEY=your_api_key_here      # DeepSeek API 密钥
-DEEPSEEK_BASE_URL=https://api.deepseek.com  # API 基础 URL
-DEEPSEEK_MODEL=deepseek-chat            # 使用的模型名称
+# === DeepSeek API Configuration ===
+DEEPSEEK_API_KEY=your_api_key_here      # DeepSeek API key
+DEEPSEEK_BASE_URL=https://api.deepseek.com  # API base URL
+DEEPSEEK_MODEL=deepseek-chat            # Model name to use
 
-# === 请求配置 ===
-API_TIMEOUT=30                          # API 超时时间（秒）
-API_RETRIES=3                           # 重试次数
-API_RETRY_DELAY=1                       # 重试延迟（秒）
+# === Request Configuration ===
+API_TIMEOUT=30                          # API timeout (seconds)
+API_RETRIES=3                           # Number of retries
+API_RETRY_DELAY=1                       # Retry delay (seconds)
 
-# === 缓存配置 ===
-ENABLE_CACHE=true                       # 启用响应缓存
-CACHE_TTL=3600                          # 缓存过期时间（秒）
-CACHE_SIZE=100                          # 缓存大小
+# === Cache Configuration ===
+ENABLE_CACHE=true                       # Enable response caching
+CACHE_TTL=3600                          # Cache expiration time (seconds)
+CACHE_SIZE=100                          # Cache size
 
-# === 日志配置 ===
-LOG_LEVEL=INFO                          # 日志级别
-LOG_LLM_REQUESTS=false                  # 是否记录 LLM 请求
+# === Log Configuration ===
+LOG_LEVEL=INFO                          # Log level
+LOG_LLM_REQUESTS=false                  # Whether to log LLM requests
 ```
 
-### 动态配置
+### Dynamic Configuration
 
 ```python
-# 在运行时动态切换
+# Switch dynamically at runtime
 from llm_client import LLMClient
 
 client = LLMClient()
 
-# 切换到内置模式
+# Switch to built-in mode
 client.switch_mode('builtin')
 
-# 切换到外部模式
+# Switch to external mode
 client.switch_mode('external')
 
-# 获取当前模式信息
+# Get current mode information
 info = client.get_mode_info()
-print(f"当前模式: {info['mode']}")
-print(f"状态: {info['status']}")
+print(f"Current mode: {info['mode']}")
+print(f"Status: {info['status']}")
 ```
 
-## 🧪 测试和验证
+## 🧪 Testing and Validation
 
-### 模式切换测试
+### Mode Switching Tests
 
 ```bash
-# 测试内置模式
+# Test built-in mode
 python test_builtin_mode.py
 
-# 测试外部模式
+# Test external mode
 python test_external_mode.py
 
-# 测试模式切换
+# Test mode switching
 python test_mode_switching.py
 ```
 
-### 性能对比测试
+### Performance Comparison Tests
 
 ```bash
-# 运行性能对比
+# Run performance comparison
 python benchmark_llm_modes.py
 
-# 查看测试结果
+# View test results
 cat logs/performance_comparison.log
 ```
 
-### 功能验证
+### Functionality Verification
 
 ```python
-# 验证智能体功能
+# Verify agent functionality
 def test_agent_functionality():
-    # 测试内置模式
+    # Test built-in mode
     switch_llm_mode('builtin')
-    result1 = call_agent_with_llm('analyst', '分析市场趋势')
+    result1 = call_agent_with_llm('analyst', 'Analyze market trends')
     
-    # 测试外部模式
+    # Test external mode
     switch_llm_mode('external')
-    result2 = call_agent_with_llm('analyst', '分析市场趋势')
+    result2 = call_agent_with_llm('analyst', 'Analyze market trends')
     
-    # 比较结果
+    # Compare results
     compare_results(result1, result2)
 ```
 
-## 🚨 故障排除
+## 🚨 Troubleshooting
 
-### 内置模式问题
+### Built-in Mode Issues
 
-**问题：智能体没有响应**
+**Issue: Agent not responding**
 ```bash
-# 检查 Cursor LLM 状态
-# 确保 Cursor 的 AI 功能正常工作
+# Check Cursor LLM status
+# Ensure Cursor's AI functionality is working properly
 
-# 验证智能体配置
+# Verify agent configuration
 python validate_agents.py
 
-# 检查角色提示
+# Check role prompts
 python check_role_prompts.py
 ```
 
-**问题：角色扮演不准确**
+**Issue: Inaccurate role playing**
 ```bash
-# 更新智能体配置
+# Update agent configuration
 python update_agent_configs.py
 
-# 重新加载智能体
+# Reload agents
 python reload_agents.py
 ```
 
-### 外部模式问题
+### External Mode Issues
 
-**问题：API 连接失败**
+**Issue: API connection failure**
 ```bash
-# 检查网络连接
+# Check network connection
 ping api.deepseek.com
 
-# 验证 API Key
+# Verify API Key
 python test_api_key.py
 
-# 检查 API 配置
+# Check API configuration
 python check_api_config.py
 ```
 
-**问题：请求超时**
+**Issue: Request timeout**
 ```bash
-# 增加超时时间
+# Increase timeout
 set API_TIMEOUT=60
 
-# 启用重试机制
+# Enable retry mechanism
 set API_RETRIES=5
 
-# 检查网络质量
+# Check network quality
 python test_network_quality.py
 ```
 
-### 切换问题
+### Switching Issues
 
-**问题：模式切换不生效**
+**Issue: Mode switch not taking effect**
 ```bash
-# 重启服务
+# Restart service
 python bmad_agent_mcp.py --restart
 
-# 清理缓存
+# Clear cache
 python clear_cache.py
 
-# 重新加载配置
+# Reload configuration
 python reload_config.py
 ```
 
-## 📊 监控和日志
+## 📊 Monitoring and Logging
 
-### 模式使用统计
+### Mode Usage Statistics
 
 ```python
-# 查看模式使用统计
+# View mode usage statistics
 from utils import get_usage_stats
 
 stats = get_usage_stats()
-print(f"内置模式使用次数: {stats['builtin_count']}")
-print(f"外部模式使用次数: {stats['external_count']}")
-print(f"平均响应时间: {stats['avg_response_time']}ms")
+print(f"Built-in mode usage count: {stats['builtin_count']}")
+print(f"External mode usage count: {stats['external_count']}")
+print(f"Average response time: {stats['avg_response_time']}ms")
 ```
 
-### 性能监控
+### Performance Monitoring
 
 ```bash
-# 启用性能监控
+# Enable performance monitoring
 set ENABLE_PERFORMANCE_MONITORING=true
 
-# 查看性能报告
+# View performance report
 python generate_performance_report.py
 
-# 实时监控
+# Real-time monitoring
 python monitor_performance.py
 ```
 
-### 日志分析
+### Log Analysis
 
 ```bash
-# 分析 LLM 请求日志
+# Analyze LLM request logs
 python analyze_llm_logs.py
 
-# 生成使用报告
+# Generate usage report
 python generate_usage_report.py
 
-# 导出统计数据
+# Export statistics
 python export_stats.py --format csv
 ```
 
-## 🎯 最佳实践
+## 🎯 Best Practices
 
-### 1. 模式选择策略
+### 1. Mode Selection Strategy
 
 ```python
-# 智能模式选择
+# Intelligent mode selection
 def choose_optimal_mode(task_type, complexity, network_available):
     if not network_available:
         return 'builtin'
     
     if task_type in ['coding', 'debugging', 'refactoring']:
-        return 'builtin'  # 快速响应更重要
+        return 'builtin'  # Fast response more important
     
     if complexity == 'high' and task_type in ['analysis', 'architecture']:
-        return 'external'  # 专业能力更重要
+        return 'external'  # Professional capabilities more important
     
-    return 'builtin'  # 默认使用内置模式
+    return 'builtin'  # Default to built-in mode
 ```
 
-### 2. 性能优化
+### 2. Performance Optimization
 
 ```python
-# 缓存策略
+# Caching strategy
 def optimize_performance():
-    # 启用智能缓存
+    # Enable intelligent caching
     enable_smart_cache()
     
-    # 预热常用智能体
+    # Preload common agents
     preload_common_agents()
     
-    # 优化网络连接
+    # Optimize network settings
     optimize_network_settings()
 ```
 
-### 3. 错误处理
+### 3. Error Handling
 
 ```python
-# 优雅降级
+# Graceful degradation
 def handle_llm_error(error, current_mode):
     if current_mode == 'external' and is_network_error(error):
-        # 网络问题时自动切换到内置模式
+        # Auto switch to built-in mode on network issues
         switch_llm_mode('builtin')
         return retry_with_builtin_mode()
     
     return handle_generic_error(error)
 ```
 
-## 🔗 相关资源
+## 🔗 Related Resources
 
-- [Cursor IDE 官方文档](https://cursor.sh/docs)
-- [DeepSeek API 文档](https://platform.deepseek.com/docs)
-- [FastMCP 框架文档](https://github.com/jlowin/fastmcp)
-- [BMAD 方法论](https://github.com/bmadcode/BMAD-METHOD)
+- [Cursor IDE Official Documentation](https://cursor.sh/docs)
+- [DeepSeek API Documentation](https://platform.deepseek.com/docs)
+- [FastMCP Framework Documentation](https://github.com/jlowin/fastmcp)
+- [BMAD Methodology](https://github.com/bmadcode/BMAD-METHOD)
 
 ---
 
-**🎉 通过合理的模式选择和配置，充分发挥 BMAD Agent 的强大功能！**
+**🎉 Maximize the power of BMAD Agent through proper mode selection and configuration!**
