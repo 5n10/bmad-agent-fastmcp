@@ -77,6 +77,17 @@ python bmad_agent_mcp.py
 - **🔄 双 LLM 模式**：支持 Cursor 内置 LLM 和 DeepSeek API 动态切换
 - **📋 6 个工作流程**：全栈开发、API 开发、数据分析等完整流程
 - **🎯 即插即用**：与 Cursor IDE 无缝集成
+- **⚡ 性能优化**：智能缓存、懒加载、快速启动（< 2秒）
+
+## 🚀 性能特性
+
+- **智能缓存**：自动缓存已解析的配置文件，40-60x 访问速度提升
+- **懒加载**：按需加载资源，降低启动时间和内存占用
+- **快速启动**：优化的初始化流程，启动时间 < 2 秒
+- **自动失效**：文件修改后缓存自动更新，无需手动刷新
+- **批量操作**：高效的文件扫描和批量处理
+
+详见 [性能优化文档](docs/PERFORMANCE_OPTIMIZATIONS.md)
 
 ## 🔄 LLM 模式切换
 
@@ -145,6 +156,7 @@ get_llm_mode_info()          # 查看模式信息
 - **🔄 [LLM 切换指南](docs/LLM_SWITCH_GUIDE.md)** - LLM 模式切换详细指南
 - **🎯 [Cursor 使用指南](docs/CURSOR_USAGE_GUIDE.md)** - Cursor IDE 集成指南
 - **📝 [最终解决方案](docs/FINAL_SOLUTION_REPORT.md)** - 完整的解决方案报告
+- **⚡ [性能优化说明](docs/PERFORMANCE_OPTIMIZATIONS.md)** - 性能优化和缓存机制
 
 ## 🧪 测试
 
@@ -157,6 +169,9 @@ python tests/simple_mcp_test.py
 
 # 测试 LLM 功能
 python tests/quick_llm_test.py
+
+# 测试性能优化
+python tests/performance_test.py
 ```
 
 ## 🔧 配置
