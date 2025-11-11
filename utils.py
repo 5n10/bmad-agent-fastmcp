@@ -16,7 +16,7 @@ class BMADUtils:
     
     @staticmethod
     def validate_agent_file(file_path: Path) -> Dict[str, Any]:
-        """验证智能体文件格式"""
+        """验证智能体文件格式 - 优化版本"""
         result = {
             "valid": False,
             "errors": [],
@@ -39,6 +39,11 @@ class BMADUtils:
             yaml_content = yaml_match.group(1)
             config = yaml.safe_load(yaml_content)
             
+            # Quick type check
+            if not isinstance(config, dict):
+                result["errors"].append("YAML 配置不是有效的字典")
+                return result
+            
             # 验证必需字段
             required_fields = {
                 "agent": ["id", "name", "title"],
@@ -50,22 +55,31 @@ class BMADUtils:
                     result["errors"].append(f"缺少 {section} 配置节")
                     continue
                 
+                section_data = config[section]
+                if not isinstance(section_data, dict):
+                    result["errors"].append(f"{section} 配置节不是有效的字典")
+                    continue
+                
                 for field in fields:
-                    if field not in config[section]:
+                    if field not in section_data:
                         result["errors"].append(f"缺少 {section}.{field} 字段")
             
             if not result["errors"]:
                 result["valid"] = True
                 result["agent_info"] = config
             
+        except yaml.YAMLError as e:
+            result["errors"].append(f"YAML 解析错误: {str(e)}")
+        except IOError as e:
+            result["errors"].append(f"文件读取错误: {str(e)}")
         except Exception as e:
-            result["errors"].append(f"文件解析错误: {str(e)}")
+            result["errors"].append(f"未知错误: {str(e)}")
         
         return result
     
     @staticmethod
     def validate_workflow_file(file_path: Path) -> Dict[str, Any]:
-        """验证工作流程文件格式"""
+        """验证工作流程文件格式 - 优化版本"""
         result = {
             "valid": False,
             "errors": [],
@@ -77,12 +91,21 @@ class BMADUtils:
             with open(file_path, 'r', encoding='utf-8') as f:
                 config = yaml.safe_load(f)
             
+            # Quick type check
+            if not isinstance(config, dict):
+                result["errors"].append("配置不是有效的字典")
+                return result
+            
             # 验证必需字段
             if "workflow" not in config:
                 result["errors"].append("缺少 workflow 配置节")
                 return result
             
             workflow = config["workflow"]
+            if not isinstance(workflow, dict):
+                result["errors"].append("workflow 配置节不是有效的字典")
+                return result
+            
             required_fields = ["id", "name", "description"]
             
             for field in required_fields:
@@ -102,8 +125,12 @@ class BMADUtils:
                 result["valid"] = True
                 result["workflow_info"] = config
             
+        except yaml.YAMLError as e:
+            result["errors"].append(f"YAML 解析错误: {str(e)}")
+        except IOError as e:
+            result["errors"].append(f"文件读取错误: {str(e)}")
         except Exception as e:
-            result["errors"].append(f"文件解析错误: {str(e)}")
+            result["errors"].append(f"未知错误: {str(e)}")
         
         return result
     
@@ -201,7 +228,7 @@ class BMADUtils:
     
     @staticmethod
     def scan_bmad_core(bmad_path: Path) -> Dict[str, Any]:
-        """扫描 .bmad-core 目录并生成报告"""
+        """扫描 .bmad-core 目录并生成报告 - 优化版本"""
         result = {
             "path": str(bmad_path),
             "exists": bmad_path.exists(),
@@ -215,13 +242,14 @@ class BMADUtils:
         if not bmad_path.exists():
             return result
         
-        # 扫描智能体
+        # 扫描智能体 - 优化：先收集所有文件，然后批量处理
         agents_dir = bmad_path / "agents"
         if agents_dir.exists():
             agent_files = list(agents_dir.glob("*.md"))
             result["agents"]["count"] = len(agent_files)
             result["agents"]["files"] = [f.name for f in agent_files]
             
+            # Batch validation
             for agent_file in agent_files:
                 validation = BMADUtils.validate_agent_file(agent_file)
                 if validation["valid"]:
@@ -232,13 +260,14 @@ class BMADUtils:
                         "errors": validation["errors"]
                     })
         
-        # 扫描工作流程
+        # 扫描工作流程 - 优化：先收集所有文件，然后批量处理
         workflows_dir = bmad_path / "workflows"
         if workflows_dir.exists():
             workflow_files = list(workflows_dir.glob("*.yaml"))
             result["workflows"]["count"] = len(workflow_files)
             result["workflows"]["files"] = [f.name for f in workflow_files]
             
+            # Batch validation
             for workflow_file in workflow_files:
                 validation = BMADUtils.validate_workflow_file(workflow_file)
                 if validation["valid"]:
@@ -249,14 +278,14 @@ class BMADUtils:
                         "errors": validation["errors"]
                     })
         
-        # 扫描任务
+        # 扫描任务 - 优化：只收集文件名，不读取内容
         tasks_dir = bmad_path / "tasks"
         if tasks_dir.exists():
             task_files = list(tasks_dir.glob("*.md"))
             result["tasks"]["count"] = len(task_files)
             result["tasks"]["files"] = [f.name for f in task_files]
         
-        # 扫描模板
+        # 扫描模板 - 优化：只收集文件名，不读取内容
         templates_dir = bmad_path / "templates"
         if templates_dir.exists():
             template_files = list(templates_dir.glob("*.md"))

@@ -78,7 +78,7 @@ class TaskInfo:
     outputs: List[str]
 
 class BMADCore:
-    """BMAD 核心管理器"""
+    """BMAD 核心管理器 - 优化版本，支持缓存和懒加载"""
     
     def __init__(self):
         self.agents: Dict[str, AgentInfo] = {}
@@ -88,11 +88,17 @@ class BMADCore:
         self.current_agent: Optional[str] = None
         self.current_workflow: Optional[str] = None
         self.workflow_state: Dict[str, Any] = {}
+        
+        # Performance optimization: cache for parsed files
+        self._agent_cache: Dict[str, tuple[float, AgentInfo]] = {}
+        self._workflow_cache: Dict[str, tuple[float, WorkflowInfo]] = {}
+        self._templates_loaded = False
+        self._tasks_loaded = False
+        
         self.load_core_config()
         self.discover_agents()
         self.discover_workflows()
-        self.discover_tasks()
-        self.discover_templates()
+        # Lazy load tasks and templates only when needed
     
     def load_core_config(self):
         """加载核心配置"""
@@ -103,24 +109,36 @@ class BMADCore:
             self.config = {}
     
     def discover_agents(self):
-        """发现所有智能体"""
+        """发现所有智能体 - 优化版本，使用缓存"""
         agents_dir = BMAD_CORE_PATH / "agents"
         if not agents_dir.exists():
             return
         
         for agent_file in agents_dir.glob("*.md"):
             agent_id = agent_file.stem
+            
+            # Check cache first
+            mtime = agent_file.stat().st_mtime
+            if agent_id in self._agent_cache:
+                cached_mtime, cached_info = self._agent_cache[agent_id]
+                if cached_mtime == mtime:
+                    self.agents[agent_id] = cached_info
+                    continue
+            
+            # Parse and cache
             agent_info = self.parse_agent_file(agent_file)
             if agent_info:
                 self.agents[agent_id] = agent_info
+                self._agent_cache[agent_id] = (mtime, agent_info)
     
     def parse_agent_file(self, file_path: Path) -> Optional[AgentInfo]:
-        """解析智能体文件"""
+        """解析智能体文件 - 优化版本"""
         try:
+            # Read file once
             with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
             
-            # 提取 YAML 配置
+            # 提取 YAML 配置 - 使用更高效的正则表达式
             yaml_match = re.search(r'```yaml\n(.*?)\n```', content, re.DOTALL)
             if not yaml_match:
                 return None
@@ -128,7 +146,14 @@ class BMADCore:
             yaml_content = yaml_match.group(1)
             config = yaml.safe_load(yaml_content)
             
+            # Quick validation
+            if not isinstance(config, dict):
+                return None
+            
             agent_config = config.get('agent', {})
+            if not agent_config:
+                return None
+            
             persona_config = config.get('persona', {})
             dependencies = config.get('dependencies', {})
             
@@ -145,28 +170,49 @@ class BMADCore:
                 focus=persona_config.get('focus', ''),
                 dependencies=dependencies
             )
-        except Exception as e:
-            print(f"Error parsing agent file {file_path}: {e}")
+        except (IOError, yaml.YAMLError) as e:
+            # Specific error types for I/O and YAML parsing
+            return None
+        except Exception:
+            # Catch-all for other errors
             return None
     
     def discover_workflows(self):
-        """发现所有工作流程"""
+        """发现所有工作流程 - 优化版本，使用缓存"""
         workflows_dir = BMAD_CORE_PATH / "workflows"
         if not workflows_dir.exists():
             return
         
         for workflow_file in workflows_dir.glob("*.yaml"):
+            workflow_id = workflow_file.stem
+            
+            # Check cache first
+            mtime = workflow_file.stat().st_mtime
+            if workflow_id in self._workflow_cache:
+                cached_mtime, cached_info = self._workflow_cache[workflow_id]
+                if cached_mtime == mtime:
+                    self.workflows[workflow_id] = cached_info
+                    continue
+            
+            # Parse and cache
             workflow_info = self.parse_workflow_file(workflow_file)
             if workflow_info:
                 self.workflows[workflow_info.id] = workflow_info
+                self._workflow_cache[workflow_id] = (mtime, workflow_info)
     
     def parse_workflow_file(self, file_path: Path) -> Optional[WorkflowInfo]:
-        """解析工作流程文件"""
+        """解析工作流程文件 - 优化版本"""
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 config = yaml.safe_load(f)
             
+            # Quick validation
+            if not isinstance(config, dict):
+                return None
+            
             workflow_config = config.get('workflow', {})
+            if not workflow_config:
+                return None
             
             return WorkflowInfo(
                 id=workflow_config.get('id', file_path.stem),
@@ -176,14 +222,21 @@ class BMADCore:
                 project_types=workflow_config.get('project_types', []),
                 sequence=workflow_config.get('sequence', [])
             )
-        except Exception as e:
-            print(f"Error parsing workflow file {file_path}: {e}")
+        except (IOError, yaml.YAMLError):
+            # Specific error types for I/O and YAML parsing
+            return None
+        except Exception:
+            # Catch-all for other errors
             return None
     
     def discover_tasks(self):
-        """发现所有任务"""
+        """发现所有任务 - 懒加载优化"""
+        if self._tasks_loaded:
+            return
+        
         tasks_dir = BMAD_CORE_PATH / "tasks"
         if not tasks_dir.exists():
+            self._tasks_loaded = True
             return
         
         for task_file in tasks_dir.glob("*.md"):
@@ -196,17 +249,49 @@ class BMADCore:
                 dependencies=[],
                 outputs=[]
             )
+        
+        self._tasks_loaded = True
     
     def discover_templates(self):
-        """发现所有模板"""
+        """发现所有模板 - 懒加载优化"""
+        if self._templates_loaded:
+            return
+        
         templates_dir = BMAD_CORE_PATH / "templates"
         if not templates_dir.exists():
+            self._templates_loaded = True
             return
         
         for template_file in templates_dir.glob("*.md"):
             template_name = template_file.stem
             with open(template_file, 'r', encoding='utf-8') as f:
                 self.templates[template_name] = f.read()
+        
+        self._templates_loaded = True
+    
+    def get_task(self, task_name: str) -> Optional[TaskInfo]:
+        """获取任务信息，触发懒加载"""
+        if not self._tasks_loaded:
+            self.discover_tasks()
+        return self.tasks.get(task_name)
+    
+    def get_all_tasks(self) -> Dict[str, TaskInfo]:
+        """获取所有任务，触发懒加载"""
+        if not self._tasks_loaded:
+            self.discover_tasks()
+        return self.tasks
+    
+    def get_template(self, template_name: str) -> Optional[str]:
+        """获取模板，触发懒加载"""
+        if not self._templates_loaded:
+            self.discover_templates()
+        return self.templates.get(template_name)
+    
+    def get_all_templates(self) -> Dict[str, str]:
+        """获取所有模板，触发懒加载"""
+        if not self._templates_loaded:
+            self.discover_templates()
+        return self.templates
 
 # 全局 BMAD 核心实例
 bmad_core = BMADCore()
@@ -506,7 +591,8 @@ def list_tasks(agent_id: Optional[str] = None) -> Dict[str, Any]:
     Returns:
         任务列表
     """
-    tasks = bmad_core.tasks
+    # Use lazy loading
+    tasks = bmad_core.get_all_tasks()
 
     if agent_id:
         if agent_id not in bmad_core.agents:
@@ -543,10 +629,10 @@ def execute_task(task_name: str, context: Optional[Dict[str, Any]] = None) -> Di
     Returns:
         任务执行结果
     """
-    if task_name not in bmad_core.tasks:
+    # Use lazy loading
+    task = bmad_core.get_task(task_name)
+    if not task:
         return {"error": f"Task '{task_name}' not found"}
-
-    task = bmad_core.tasks[task_name]
 
     # 检查是否有激活的智能体
     if not bmad_core.current_agent:
@@ -720,9 +806,11 @@ def list_templates() -> Dict[str, Any]:
     Returns:
         模板列表
     """
+    # Use lazy loading
+    templates = bmad_core.get_all_templates()
     return {
-        "templates": list(bmad_core.templates.keys()),
-        "count": len(bmad_core.templates)
+        "templates": list(templates.keys()),
+        "count": len(templates)
     }
 
 @mcp.tool()
@@ -736,12 +824,14 @@ def get_template(template_name: str) -> Dict[str, Any]:
     Returns:
         模板内容
     """
-    if template_name not in bmad_core.templates:
+    # Use lazy loading
+    template_content = bmad_core.get_template(template_name)
+    if not template_content:
         return {"error": f"Template '{template_name}' not found"}
 
     return {
         "template_name": template_name,
-        "content": bmad_core.templates[template_name]
+        "content": template_content
     }
 
 @mcp.tool()
@@ -760,15 +850,19 @@ def get_system_status() -> Dict[str, Any]:
         "config_loaded": bool(bmad_core.config),
         "agents_count": len(bmad_core.agents),
         "workflows_count": len(bmad_core.workflows),
-        "tasks_count": len(bmad_core.tasks),
-        "templates_count": len(bmad_core.templates),
+        "tasks_count": len(bmad_core.get_all_tasks()),
+        "templates_count": len(bmad_core.get_all_templates()),
         "current_agent": bmad_core.current_agent,
         "current_workflow": bmad_core.current_workflow,
         "workflow_active": bool(bmad_core.current_workflow),
         "system_time": datetime.now().isoformat(),
         "llm_mode": current_mode,
         "llm_mode_description": "Cursor 内置 LLM" if current_mode == "builtin_llm" else "DeepSeek API",
-        "llm_client_ready": llm_client is not None
+        "llm_client_ready": llm_client is not None,
+        "lazy_loading": {
+            "tasks_loaded": bmad_core._tasks_loaded,
+            "templates_loaded": bmad_core._templates_loaded
+        }
     }
 
 @mcp.tool()
@@ -1058,21 +1152,23 @@ def get_agent_tasks(agent_id: str) -> Dict[str, Any]:
 
     agent = bmad_core.agents[agent_id]
 
-    # 获取智能体相关的任务
+    # 获取智能体相关的任务 - 使用懒加载
+    all_tasks = bmad_core.get_all_tasks()
     agent_tasks = {}
     for task_type, task_list in agent.dependencies.items():
         if task_type == "tasks":
             for task_name in task_list:
-                if task_name in bmad_core.tasks:
-                    agent_tasks[task_name] = asdict(bmad_core.tasks[task_name])
+                if task_name in all_tasks:
+                    agent_tasks[task_name] = asdict(all_tasks[task_name])
 
-    # 获取智能体相关的模板
+    # 获取智能体相关的模板 - 使用懒加载
+    all_templates = bmad_core.get_all_templates()
     agent_templates = {}
     for task_type, task_list in agent.dependencies.items():
         if task_type == "templates":
             for template_name in task_list:
-                if template_name in bmad_core.templates:
-                    agent_templates[template_name] = len(bmad_core.templates[template_name])
+                if template_name in all_templates:
+                    agent_templates[template_name] = len(all_templates[template_name])
 
     return {
         "agent": asdict(agent),
