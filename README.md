@@ -5,9 +5,9 @@
 [![FastMCP](https://img.shields.io/badge/FastMCP-Compatible-green.svg)](https://github.com/jlowin/fastmcp)
 [![Cursor IDE](https://img.shields.io/badge/Cursor-IDE-purple.svg)](https://cursor.sh/)
 
-## 🎯 BMAD 方法论
+## 🎯 BMAD Methodology
 
-本项目基于 [BMAD-METHOD](https://github.com/bmadcode/BMAD-METHOD) 构建，这是一个强大的业务模型和架构开发方法论。
+This project is built upon the [BMAD-METHOD](https://github.com/bmadcode/BMAD-METHOD), a powerful business model and architecture development methodology.
 
 ### 🚀 Important: Keep Your BMad Installation Updated 
 
@@ -35,134 +35,134 @@ The BMAD-METHOD provides:
 
 ---
 
-> 🚀 **企业级智能服务** - 基于 FastMCP 框架的专业 AI 智能体服务，支持双 LLM 模式，提供 25+ 个专业 MCP 工具和 10 个专业智能体，与 Cursor IDE 无缝集成。
+> 🚀 **Enterprise-grade Intelligence Service** - Professional AI agent service based on FastMCP framework, supports dual LLM modes, provides 25+ professional MCP tools and 10 professional agents, seamlessly integrated with Cursor IDE.
 
-## 🌟 核心特性
+## 🌟 Core Features
 
-- **🎯 10 个专业智能体**：业务分析师、架构师、全栈开发者、产品经理、QA 工程师等
-- **🔧 25+ 个 MCP 工具**：智能体管理、工作流程控制、任务执行等
-- **🔄 双 LLM 模式**：支持 Cursor 内置 LLM 和 DeepSeek API 动态切换
-- **📋 6 个工作流程**：全栈开发、API 开发、数据分析等完整流程
-- **🎯 即插即用**：与 Cursor IDE 无缝集成
+- **🎯 10 Professional Agents**: Business Analyst, Architect, Full-stack Developer, Product Manager, QA Engineer, etc.
+- **🔧 25+ MCP Tools**: Agent management, workflow control, task execution, etc.
+- **🔄 Dual LLM Mode**: Supports dynamic switching between Cursor built-in LLM and DeepSeek API
+- **📋 6 Workflows**: Full-stack development, API development, data analysis, and other complete workflows
+- **🎯 Plug and Play**: Seamless integration with Cursor IDE
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 1. 安装依赖
+### 1. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. 配置环境
+### 2. Configure Environment
 ```bash
-# 复制环境变量模板
+# Copy environment variable template
 cp .env.example .env
 
-# 编辑环境变量（可选）
-# USE_BUILTIN_LLM=true          # 使用内置 LLM（默认）
-# DEEPSEEK_API_KEY=your_key     # DeepSeek API Key（可选）
+# Edit environment variables (optional)
+# USE_BUILTIN_LLM=true          # Use built-in LLM (default)
+# DEEPSEEK_API_KEY=your_key     # DeepSeek API Key (optional)
 ```
 
-### 3. 启动服务
+### 3. Start Service
 ```bash
 python bmad_agent_mcp.py
 ```
 
-### 4. Cursor 集成
-参考 `docs/CURSOR_USAGE_GUIDE.md` 进行 Cursor IDE 集成配置。
+### 4. Cursor Integration
+Refer to `docs/CURSOR_USAGE_GUIDE.md` for Cursor IDE integration configuration.
 
-## ⚡ 核心特性
+## ⚡ Key Features
 
-- **🎯 10 个专业智能体**：业务分析师、架构师、开发者、产品经理等
-- **🔧 25 个 MCP 工具**：智能体管理、工作流程控制、任务执行、模板处理
-- **🔄 双 LLM 模式**：支持 Cursor 内置 LLM 和 DeepSeek API 动态切换
-- **📋 6 个工作流程**：全栈开发、API 开发、数据分析等完整流程
-- **🎯 即插即用**：与 Cursor IDE 无缝集成
+- **🎯 10 Professional Agents**: Business Analyst, Architect, Developer, Product Manager, etc.
+- **🔧 25 MCP Tools**: Agent management, workflow control, task execution, template processing
+- **🔄 Dual LLM Mode**: Supports dynamic switching between Cursor built-in LLM and DeepSeek API
+- **📋 6 Workflows**: Full-stack development, API development, data analysis, and other complete workflows
+- **🎯 Plug and Play**: Seamless integration with Cursor IDE
 
-## 🔄 LLM 模式切换
+## 🔄 LLM Mode Switching
 
-### 内置 LLM 模式（默认）
-- ✅ 使用 Cursor IDE 内置 LLM
-- ✅ 无需外部 API 调用
-- ✅ 响应更快，无网络延迟
-- ✅ 无 API 费用
+### Built-in LLM Mode (Default)
+- ✅ Uses Cursor IDE built-in LLM
+- ✅ No external API calls required
+- ✅ Faster response, no network latency
+- ✅ No API fees
 
-### 外部 API 模式
-- ✅ 使用 DeepSeek API
-- ✅ 更强的推理能力
-- ✅ 支持更复杂的任务
-- ⚠️ 需要 API Key 和网络连接
+### External API Mode
+- ✅ Uses DeepSeek API
+- ✅ Stronger reasoning capabilities
+- ✅ Supports more complex tasks
+- ⚠️ Requires API Key and network connection
 
-### 切换方法
+### Switching Method
 ```python
-# 在 Cursor 中使用
-switch_llm_mode('builtin')   # 切换到内置模式
-switch_llm_mode('external')  # 切换到外部模式
-get_llm_mode_info()          # 查看模式信息
+# Use in Cursor
+switch_llm_mode('builtin')   # Switch to built-in mode
+switch_llm_mode('external')  # Switch to external mode
+get_llm_mode_info()          # View mode information
 ```
 
-## 🛠️ 主要 MCP 工具
+## 🛠️ Main MCP Tools
 
-### 智能体管理
-- `list_agents()` - 列出所有智能体
-- `get_agent_details(agent_id)` - 获取智能体详情
-- `activate_agent(agent_id)` - 激活智能体
-- `call_agent_with_llm(agent_id, task)` - 调用智能体执行任务
+### Agent Management
+- `list_agents()` - List all agents
+- `get_agent_details(agent_id)` - Get agent details
+- `activate_agent(agent_id)` - Activate agent
+- `call_agent_with_llm(agent_id, task)` - Call agent to execute task
 
-### 工作流程
-- `list_workflows()` - 列出所有工作流程
-- `start_workflow(workflow_id)` - 启动工作流程
-- `get_workflow_status()` - 获取工作流程状态
-- `advance_workflow_step()` - 推进工作流程
+### Workflows
+- `list_workflows()` - List all workflows
+- `start_workflow(workflow_id)` - Start workflow
+- `get_workflow_status()` - Get workflow status
+- `advance_workflow_step()` - Advance workflow step
 
-### LLM 功能
-- `switch_llm_mode(mode)` - 切换 LLM 模式
-- `get_llm_mode_info()` - 获取模式信息
-- `get_system_status()` - 获取系统状态
+### LLM Features
+- `switch_llm_mode(mode)` - Switch LLM mode
+- `get_llm_mode_info()` - Get mode information
+- `get_system_status()` - Get system status
 
-### 任务和模板
-- `list_tasks()` - 列出所有任务
-- `execute_task(task_id)` - 执行任务
-- `list_templates()` - 列出所有模板
-- `get_template(template_name)` - 获取模板内容
+### Tasks and Templates
+- `list_tasks()` - List all tasks
+- `execute_task(task_id)` - Execute task
+- `list_templates()` - List all templates
+- `get_template(template_name)` - Get template content
 
-## 📊 项目结构
+## 📊 Project Structure
 
 ```
-📂 根目录
-├── 📄 bmad_agent_mcp.py      # 主服务文件
-├── 📄 llm_client.py          # LLM 客户端
-├── 📄 utils.py               # 工具函数
-├── 📄 requirements.txt       # 依赖文件
-├── 📂 .bmad-core/            # 核心数据结构
-├── 📁 docs/                  # 文档目录
-├── 📁 tests/                 # 测试目录
-└── 📁 archive/               # 归档目录
+📂 Root Directory
+├── 📄 bmad_agent_mcp.py      # Main service file
+├── 📄 llm_client.py          # LLM client
+├── 📄 utils.py               # Utility functions
+├── 📄 requirements.txt       # Dependencies
+├── 📂 .bmad-core/            # Core data structures
+├── 📁 docs/                  # Documentation directory
+├── 📁 tests/                 # Test directory
+└── 📁 archive/               # Archive directory
 ```
 
-## 📚 文档
+## 📚 Documentation
 
-- **📖 [项目结构说明](PROJECT_STRUCTURE.md)** - 详细的项目结构和文件说明
-- **🔄 [LLM 切换指南](docs/LLM_SWITCH_GUIDE.md)** - LLM 模式切换详细指南
-- **🎯 [Cursor 使用指南](docs/CURSOR_USAGE_GUIDE.md)** - Cursor IDE 集成指南
-- **📝 [最终解决方案](docs/FINAL_SOLUTION_REPORT.md)** - 完整的解决方案报告
+- **📖 [Project Structure](PROJECT_STRUCTURE.md)** - Detailed project structure and file descriptions
+- **🔄 [LLM Switch Guide](docs/LLM_SWITCH_GUIDE.md)** - Detailed guide for LLM mode switching
+- **🎯 [Cursor Usage Guide](docs/CURSOR_USAGE_GUIDE.md)** - Cursor IDE integration guide
+- **📝 [Final Solution Report](docs/FINAL_SOLUTION_REPORT.md)** - Complete solution report
 
-## 🧪 测试
+## 🧪 Testing
 
 ```bash
-# 运行基础测试
+# Run basic tests
 python tests/simple_test.py
 
-# 测试 MCP 工具
+# Test MCP tools
 python tests/simple_mcp_test.py
 
-# 测试 LLM 功能
+# Test LLM functionality
 python tests/quick_llm_test.py
 ```
 
-## 🔧 配置
+## 🔧 Configuration
 
-### Cursor IDE 配置
-将以下配置添加到 Cursor 的 `settings.json`：
+### Cursor IDE Configuration
+Add the following configuration to Cursor's `settings.json`:
 
 ```json
 {
@@ -182,50 +182,50 @@ python tests/quick_llm_test.py
 }
 ```
 
-### 环境变量
+### Environment Variables
 ```bash
-USE_BUILTIN_LLM=true                    # 使用内置 LLM
-DEEPSEEK_API_KEY=your_key_here     # DeepSeek API Key（可选）
-PYTHONIOENCODING=utf-8                  # 字符编码
+USE_BUILTIN_LLM=true                    # Use built-in LLM
+DEEPSEEK_API_KEY=your_key_here          # DeepSeek API Key (optional)
+PYTHONIOENCODING=utf-8                  # Character encoding
 ```
 
-## 🎯 使用示例
+## 🎯 Usage Examples
 
-### 在 Cursor 中使用
+### Using in Cursor
 
 ```
-用户: "请列出所有可用的 BMAD 智能体"
-AI: 调用 list_agents()
-返回: 10 个专业智能体列表
+User: "Please list all available BMAD agents"
+AI: Calls list_agents()
+Returns: List of 10 professional agents
 
-用户: "请使用业务分析师分析电商平台需求"
-AI: 调用 call_agent_with_llm('analyst', '分析电商平台需求')
-返回: 专业的业务分析结果
+User: "Please use Business Analyst to analyze e-commerce platform requirements"
+AI: Calls call_agent_with_llm('analyst', 'Analyze e-commerce platform requirements')
+Returns: Professional business analysis results
 
-用户: "请切换到 DeepSeek API 模式"
-AI: 调用 switch_llm_mode('external')
-返回: 已切换到外部 API 模式
+User: "Please switch to DeepSeek API mode"
+AI: Calls switch_llm_mode('external')
+Returns: Switched to external API mode
 ```
 
-## 🤝 贡献
+## 🤝 Contributing
 
-1. Fork 项目
-2. 创建功能分支
-3. 提交更改
-4. 推送到分支
-5. 创建 Pull Request
+1. Fork the project
+2. Create feature branch
+3. Commit changes
+4. Push to branch
+5. Create Pull Request
 
-## 📄 许可证
+## 📄 License
 
 MIT License
 
-## 📚 相关
+## 📚 Related
 
-- 📖 查看 `docs/` 目录中的详细文档
-- 🧪 运行 `tests/` 目录中的测试文件
-- 📋 查看 `logs/` 目录中的日志文件
-- 📦 查看 `archive/` 目录中的历史文件
+- 📖 View detailed documentation in the `docs/` directory
+- 🧪 Run test files in the `tests/` directory
+- 📋 View log files in the `logs/` directory
+- 📦 View historical files in the `archive/` directory
 
 ---
 
-**🎉 享受使用 BMAD Agent FastMCP Service！**"
+**🎉 Enjoy using BMAD Agent FastMCP Service!**
