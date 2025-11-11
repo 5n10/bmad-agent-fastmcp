@@ -1,108 +1,173 @@
-# 完整版本说明
+# Complete Version Information
 
-## 📁 文件结构说明
+## 📁 File Structure Description
 
-### 核心文件
+### Core Files
 
-- **`bmad_agent_mcp_core.py`** - 核心版本（已上传）
-  - 包含基础的 MCP 工具和核心功能
-  - 适合快速了解项目结构和基本功能
-  - 约 300 行代码
+- **`bmad_agent_mcp_core.py`** - Core version (uploaded)
+  - Contains basic MCP tools and core functionality
+  - Suitable for quickly understanding project structure and basic features
+  - Approximately 300 lines of code
 
-- **`bmad_agent_mcp.py`** - 完整版本（本地文件）
-  - 包含完整的 25 个 MCP 工具
-  - 支持所有功能：智能体调用、工作流程执行、任务管理等
-  - 约 1086 行代码
-  - **注意：由于文件较大，暂未上传到 GitHub**
+- **`bmad_agent_mcp.py`** - Complete version (local file)
+  - Contains complete 25 MCP tools
+  - Supports all features: agent calling, workflow execution, task management, etc.
+  - Approximately 1086 lines of code
+  - **Note: Due to large file size, not yet uploaded to GitHub**
 
-### 支持文件
+### Support Files
 
-- **`llm_client.py`** ✅ 已上传 - LLM 客户端，支持双模式
-- **`utils.py`** ✅ 已上传 - 工具函数和 BMAD 核心管理
-- **`requirements.txt`** ✅ 已上传 - Python 依赖
+- **`llm_client.py`** ✅ Uploaded - LLM client, supports dual modes
+- **`utils.py`** ✅ Uploaded - Utility functions and BMAD core management
+- **`requirements.txt`** ✅ Uploaded - Python dependencies
 
-## 🔧 完整版本的 25 个 MCP 工具
+## 🔧 Complete Version's 25 MCP Tools
 
-完整版本 `bmad_agent_mcp.py` 包含以下 MCP 工具：
+The complete version `bmad_agent_mcp.py` contains the following MCP tools:
 
-### 智能体管理 (5个)
-1. `list_agents()` - 列出所有智能体
-2. `get_agent_details()` - 获取智能体详情
-3. `activate_agent()` - 激活智能体
-4. `call_agent()` - 调用智能体执行任务
-5. `call_agent_with_llm()` - 使用 LLM 调用智能体
+### Agent Management (5 tools)
+1. `list_agents()` - List all agents
+2. `get_agent_details()` - Get agent details
+3. `activate_agent()` - Activate agent
+4. `call_agent()` - Call agent to execute task
+5. `call_agent_with_llm()` - Call agent using LLM
 
-### 工作流程管理 (6个)
-6. `list_workflows()` - 列出工作流程
-7. `get_workflow_details()` - 获取工作流程详情
-8. `start_workflow()` - 启动工作流程
-9. `continue_workflow()` - 继续工作流程
-10. `get_workflow_status()` - 获取工作流程状态
-11. `reset_workflow()` - 重置工作流程
+### Workflow Management (6 tools)
+6. `list_workflows()` - List workflows
+7. `get_workflow_details()` - Get workflow details
+8. `start_workflow()` - Start workflow
+9. `continue_workflow()` - Continue workflow
+10. `get_workflow_status()` - Get workflow status
+11. `reset_workflow()` - Reset workflow
 
-### 任务管理 (4个)
-12. `list_tasks()` - 列出任务
-13. `get_task_details()` - 获取任务详情
-14. `execute_task()` - 执行任务
-15. `get_task_history()` - 获取任务历史
+### Task Management (4 tools)
+12. `list_tasks()` - List tasks
+13. `get_task_details()` - Get task details
+14. `execute_task()` - Execute task
+15. `get_task_history()` - Get task history
 
-### 模板管理 (3个)
-16. `list_templates()` - 列出模板
-17. `get_template()` - 获取模板内容
-18. `generate_document()` - 生成文档
+### Template Management (3 tools)
+16. `list_templates()` - List templates
+17. `get_template()` - Get template content
+18. `apply_template()` - Apply template
 
-### 系统管理 (4个)
-19. `get_system_status()` - 获取系统状态
-20. `scan_bmad_core()` - 扫描 BMAD 核心
-21. `get_core_config()` - 获取核心配置
-22. `health_check()` - 健康检查
+### LLM Features (3 tools)
+19. `switch_llm_mode()` - Switch LLM mode
+20. `get_llm_mode_info()` - Get mode information
+21. `test_llm_connection()` - Test LLM connection
 
-### LLM 模式管理 (3个)
-23. `switch_llm_mode()` - 切换 LLM 模式
-24. `get_llm_mode_info()` - 获取 LLM 模式信息
-25. `test_llm_connection()` - 测试 LLM 连接
+### System Management (4 tools)
+22. `get_system_status()` - Get system status
+23. `get_system_info()` - Get system information
+24. `validate_bmad_core()` - Validate BMAD core
+25. `get_health_check()` - Get health check
 
-## 🚀 如何获取完整版本
+## 📊 Version Comparison
 
-### 方法 1：从本地项目复制
-如果你有本地项目文件，完整版本位于：
+| Feature | Core Version | Complete Version |
+|---------|--------------|------------------|
+| **Lines of Code** | ~300 | ~1086 |
+| **MCP Tools** | 8 basic tools | 25 complete tools |
+| **Agent Support** | Basic listing | Full management |
+| **Workflow Support** | Basic listing | Complete management |
+| **Task Management** | ❌ Not included | ✅ Included |
+| **Template System** | ❌ Not included | ✅ Included |
+| **LLM Mode Switch** | ✅ Included | ✅ Included |
+| **System Management** | Basic | Complete |
+
+## 🚀 Usage Recommendation
+
+### Core Version
+- ✅ Learning and understanding the project structure
+- ✅ Quick integration and testing
+- ✅ Basic agent calls
+- ✅ Lightweight deployment
+
+### Complete Version
+- ✅ Production environment deployment
+- ✅ All features required
+- ✅ Complex workflow management
+- ✅ Enterprise-level applications
+
+## 📝 File Locations
+
 ```
-./bmad_agent_mcp.py
+📂 bmad-agent-fastmcp/
+├── 📄 bmad_agent_mcp_core.py    # Core version (GitHub)
+├── 📄 bmad_agent_mcp.py         # Complete version (Local)
+├── 📄 llm_client.py             # LLM client (GitHub)
+├── 📄 utils.py                  # Utilities (GitHub)
+└── 📄 requirements.txt          # Dependencies (GitHub)
 ```
 
-### 方法 2：手动创建
-你可以基于核心版本 `bmad_agent_mcp_core.py` 扩展，添加其余的 22 个 MCP 工具。
+## 🔄 Upgrade Path
 
-### 方法 3：联系开发者
-如果需要完整版本，可以通过 GitHub Issues 联系项目维护者。
+### From Core Version to Complete Version
 
-## 📋 功能对比
+1. **Download Complete Version**
+   ```bash
+   # Contact project maintainer for complete version
+   # Or develop based on core version
+   ```
 
-| 功能 | 核心版本 | 完整版本 |
-|------|----------|----------|
-| 基础智能体管理 | ✅ | ✅ |
-| 智能体调用 | ❌ | ✅ |
-| 工作流程执行 | ❌ | ✅ |
-| 任务管理 | ❌ | ✅ |
-| 模板处理 | ❌ | ✅ |
-| LLM 模式切换 | ❌ | ✅ |
-| 系统监控 | ❌ | ✅ |
-| 双 LLM 支持 | ✅ | ✅ |
+2. **Replace Main File**
+   ```bash
+   # Backup core version
+   cp bmad_agent_mcp_core.py bmad_agent_mcp_core.py.bak
+   
+   # Use complete version
+   cp bmad_agent_mcp.py bmad_agent_mcp.py.full
+   ```
 
-## 🔄 升级路径
+3. **Update Configuration**
+   ```bash
+   # No configuration changes needed
+   # Complete version is fully backward compatible
+   ```
 
-1. **开发阶段**：使用核心版本进行基础测试
-2. **生产阶段**：升级到完整版本获得全部功能
-3. **企业部署**：基于完整版本进行定制开发
+4. **Restart Service**
+   ```bash
+   python bmad_agent_mcp.py
+   ```
 
-## 📞 技术支持
+## ⚠️ Important Notes
 
-如果你需要完整版本或有任何问题，请：
+1. **Core Version Limitations**
+   - Only basic MCP tools
+   - Limited workflow management
+   - No task and template systems
+   - Basic system management only
 
-1. 提交 GitHub Issue
-2. 查看项目文档
-3. 参考 `docs/` 目录中的详细指南
+2. **Complete Version Advantages**
+   - All 25 MCP tools
+   - Complete workflow management
+   - Full task and template systems
+   - Complete system management and monitoring
+
+3. **File Size Consideration**
+   - Complete version (~1086 lines) may be too large for some scenarios
+   - Consider using core version for learning and testing
+   - Production environments recommend complete version
+
+## 📚 Documentation
+
+Both versions share the same documentation:
+- [Project Structure](PROJECT_STRUCTURE.md)
+- [Cursor Usage Guide](docs/CURSOR_USAGE_GUIDE.md)
+- [LLM Switch Guide](docs/LLM_SWITCH_GUIDE.md)
+- [Final Solution Report](docs/FINAL_SOLUTION_REPORT.md)
+
+## 🤝 Contributing
+
+If you want to contribute to the complete version:
+1. Contact project maintainer
+2. Request access to complete version
+3. Follow [Contributing Guide](CONTRIBUTING.md)
 
 ---
 
-**注意**：核心版本已经包含了项目的主要架构和基础功能，可以作为学习和开发的起点。
+**📦 Choose the appropriate version based on your needs!**
+
+- **Quick Start**: Use core version
+- **Production Use**: Use complete version
+- **Learning Purpose**: Either version works
